@@ -45,7 +45,12 @@
         nativeEvent: function (eventName) {
             var self = this;
             return function () {
-                var event = new Event(eventName);
+                if (typeof(Event) === 'function') {
+                    var event = new Event(eventName);
+                } else {
+                    var event = document.createEvent('Event');
+                    event.initEvent(eventName, true, true);
+                }
                 self.el.dispatchEvent(event);
             };
         },
